@@ -1,0 +1,1709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Wish</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            height: 200vh;
+            overflow-x: hidden;
+            background-color: #ADD8E6;
+            transition: background-color 0.5s ease;
+            color:white;
+        } 
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.0);
+            z-index: 1100;
+        }
+        .logo {
+            font-size: 20px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+        }
+        .profile {
+            font-size: 20px;
+            cursor: pointer;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+        }
+        .app-name {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1100;
+        }
+        .app-name-image {
+            height: 160px;
+            width: auto;
+            filter: drop-shadow(0px 0px #fff) drop-shadow(0px 0px #fff) drop-shadow(0px 0px #fff) drop-shadow(0px 0px #fff);
+            display: block;
+        }
+        .banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 900;
+            transition: opacity 0.5s ease;
+            overflow: hidden;
+            background-color: #000;
+            margin-top: 0;
+        }
+        .banner video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .banner::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 25px;
+            background: linear-gradient(to top, var(--banner-fade-color, rgba(0, 0, 0, 0.8)), transparent);
+            pointer-events: none;
+            z-index: 905;
+            transition: background 0.5s ease;
+        }
+        .banner-text {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            position: absolute;
+            z-index: 910;
+        }
+        .banner-text span {
+            display: inline-block;
+            animation: colorChange 3s infinite;
+        }
+        @keyframes colorChange {
+            0% { color: #ff6b6b; }
+            33% { color: #4ecdc4; }
+            66% { color: #45b7d1; }
+            100% { color: #ff6b6b; }
+        }
+        .image-icon {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            z-index: 950;
+        }
+        .sound-icon {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            z-index: 950;
+        }
+        .video-list {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1100;
+            display: none;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .video-option {
+            width: 150px;
+            height: 100px;
+            margin: 10px;
+            cursor: pointer;
+            background-size: cover;
+            background-position: center;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            font-weight: bold;
+            background-color: #333;
+        }
+        .video-option:hover { opacity: 0.8; }
+        .start-button {
+            z-index: 950;
+            position: absolute;
+            bottom: 50px;
+        }
+        .start-button button {
+            padding: 7px 14px;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: transparent;
+            color: white;
+            border: 3px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+            text-shadow: -1px 0 #000, 1px 0 #000, 0 -1px #000, 0 1px #000;
+        }
+        .start-button button:hover { background-color: transparent; }
+        .scroll-section {
+            margin-top: 50vh;
+            padding: 20px;
+            position: relative;
+            z-index: 800;
+            color:white;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            color:white;
+        }
+        .scroll-section h3, .grid-container h3 { 
+            margin: 0;
+            font-size: 24px;
+            color: white;
+        }
+        .see-all {
+            font-size: 16px;
+            color: white;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .see-all:hover { color: #ddd; }
+        .scroll-container {
+            display: flex;
+            overflow-x: auto;
+            overflow-y: hidden;
+            gap: 10px;
+            padding-bottom: 10px;
+            width: 100%;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            position: relative;
+            z-index: 800;
+            mask-image: linear-gradient(to right, black 0%, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, black 0%, black 90%, transparent 100%);
+        }
+        .scroll-container::-webkit-scrollbar { display: none; }
+        .scroll-item {
+            min-width: 45vw;
+            height: 45vw;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border-radius: 10px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        @media (max-width: 600px) {
+            .scroll-item {
+                min-width: 150px;
+                height: 150px;
+                font-size: 16px;
+            }
+        }
+        .scroll-item:hover { opacity: 0.9; }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(51, 51, 51, 0.7);
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-around;
+            color: white;
+            font-size: 24px;
+            z-index: 2000;
+        }
+        .bottom-nav div {
+            cursor: pointer;
+            role: button;
+        }
+        .bottom-nav div:hover { color: #ddd; }
+        .belief-booster-icon {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 36px;
+            color: #FFD700;
+            background-color: rgba(51, 51, 51, 0.7);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1999;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .belief-booster-icon:hover {
+            color: #FFFF00;
+            background-color: rgba(51, 51, 51, 0.9);
+        }
+        .fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .wish-page, .wishlist-page, .audio-page, .video-page, .action-page, .books-page, .section-see-all-page, .wish-guide-page, .belief-booster-page, .subscription-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: inherit;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            z-index: 1200;
+            overflow-y: auto;
+            padding-bottom: 60px;
+        }
+        .wish-text, .page-title {
+            font-size: 36px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .wish-select {
+            padding: 10px;
+            font-size: 18px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            width: 250px;
+        }
+        .how-to-use-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1200;
+            padding: 20px;
+         font-weight: bold
+        }
+        .ask-button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4ecdc4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .ask-button:hover { background-color: #45b7d1; }
+        .back-button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+        .back-button:hover { background-color: #e55a5a; }
+        .response-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1a1a2e;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1300;
+            overflow: hidden;
+            padding-bottom: 60px;
+        }
+        .universe-response {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffcccb;
+            text-align: center;
+            padding: 20px;
+            max-width: 80%;
+            z-index: 1350;
+            position: relative;
+        }
+        .response-back-button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4ecdc4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            z-index: 1350;
+        }
+        .response-back-button:hover { background-color: #45b7d1; }
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 1325;
+            pointer-events: none;
+        }
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+        }
+        @keyframes blink {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        .grid-container {
+            width: 95%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .grid-row {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            margin-bottom: 15px;
+            white-space: nowrap;
+            scrollbar-width: none;
+            mask-image: linear-gradient(to right, black 0%, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, black 0%, black 90%, transparent 100%);
+        }
+        .grid-row::-webkit-scrollbar { display: none; }
+        .grid-item {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            flex: 0 0 auto;
+        }
+        .grid-shape {
+            width: 45vw;
+            height: 45vw;
+            border-radius: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 10px;
+            box-sizing: border-box;
+        }
+        @media (max-width: 600px) {
+            .grid-shape {
+                width: 150px;
+                height: 150px;
+            }
+        }
+        .grid-shape:hover { opacity: 0.9; }
+        .grid-title {
+            font-size: 18px;
+            color: white;
+            max-width: 90%;
+            word-wrap: break-word;
+            padding: 0 5px;
+        }
+        .see-all-header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background-color: inherit;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            z-index: 1250;
+            box-sizing: border-box;
+        }
+        .see-all-back {
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .see-all-back:hover { color: #ff6b6b; }
+        .see-all-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+        .see-all-grid {
+            width: 95%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 20px;
+        }
+        .see-all-item {
+            width: calc(50% - 5px);
+            height: 45vw;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 10px;
+            box-sizing: border-box;
+        }
+        @media (max-width: 600px) {
+            .see-all-item {
+                height: 80px;
+            }
+        }
+        .see-all-item:hover { opacity: 0.9; }
+        .wishlist-item {
+            width: 80%;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 18px;
+            color: #333;
+            cursor: pointer;
+            text-align: center;
+        }
+        .wishlist-item:hover { background-color: #f0f0f0; }
+        .guide-section {
+            width: 90%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .guide-section h3 {
+            font-size: 24px;
+            color: white;
+            margin-bottom: 10px;
+        }
+        .guide-section p {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.5;
+        }
+        .media-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            padding: 10px;
+        }
+        .booster-option, .sub-option {
+            width: 80%;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 18px;
+            color: #333;
+            cursor: pointer;
+            text-align: center;
+        }
+        .booster-option:hover, .sub-option:hover { background-color: #f0f0f0; }
+        .profile-menu {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 250px;
+            z-index: 1100;
+            display: none;
+        }
+        .profile-menu h4 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            color: #333;
+        }
+        .profile-menu p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #666;
+        }
+        .profile-option {
+            padding: 10px;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .profile-option:hover { background-color: #f0f0f0; }
+        .loading {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 36px;
+            z-index: 1400;
+        }
+        .splash-screen {
+            position: fixed;
+            inset: 0;
+            background-color: #2196F3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeOut 1s ease-in-out 5s forwards;
+        }
+        .splash-screen.hidden {
+            display: none;
+            animation: none;
+            opacity: 0;
+        }
+        .splash-logo {
+            height: 200px;
+            width: auto;
+            filter: drop-shadow(0px 0px #000) drop-shadow(0px 0px #000) drop-shadow(0px 0px #000) drop-shadow(0px 0px #000);
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        /* Styling for How to Use steps */
+.how-to-use-steps {
+    list-style-type: decimal; /* Numbers the steps (1, 2, 3, ...) */
+    padding-left: 30px; /* Aligns numbers properly */
+    margin-top: 10px; /* Space above the list */
+    margin-bottom: 10px; /* Space below the list */
+}
+
+.how-to-use-steps li {
+    margin-bottom: 15px; /* Space between steps */
+    font-size: 16px; /* Matches original font size */
+    color: black; /* Matches original color */
+}
+    </style>
+</head>
+<body>
+    <div class="splash-screen" id="splashScreen">
+        <img src="/images/splash.png" alt="Grand Wish Splash Logo" class="splash-logo">
+    </div>
+    <div class="header">
+        <div class="logo">💞</div>
+        <div class="app-name">
+            <img src="/images/grandwish.png" alt="Grand Wish Logo" class="app-name-image">
+        </div>
+        <div class="profile" id="profileIcon" tabindex="0" aria-label="Profile Menu" role="button">👤</div>
+    </div>
+
+    <div class="profile-menu" id="profileMenu">
+        <h4 id="userName">Welcome, Dreamer!</h4>
+        <p>Wishes Made: <span id="wishCount">0</span></p>
+        <p>Plan: <span id="userPlan">Free</span></p>
+        <p>Active Boosts: <span id="activeBoostsCount">0</span></p>
+        <div class="profile-option" id="manageSubscription" role="button" aria-label="Manage Subscription">Manage Subscription</div>
+        <div class="profile-option" id="buyBoosts" role="button" aria-label="Buy Belief Boosters">Buy Belief Boosters</div>
+        <div class="profile-option" id="settings" role="button" aria-label="Settings">Settings</div>
+        <div class="profile-option" id="inviteFriends" role="button" aria-label="Invite Friends">Invite Friends</div>
+        <div class="profile-option" id="howToUse" role="button" aria-label="How to Use">How to Use</div>
+    </div>
+
+    <div class="banner" id="banner">
+        <video id="bannerVideo" autoplay loop muted playsinline src="/media/video1.mp4"></video>
+        <div class="banner-text"><span></span></div>
+        <div class="start-button">
+            <button id="startBtn" role="button" aria-label="Start">START</button>
+        </div>
+        <div class="image-icon" id="imageIcon" role="button" aria-label="Select Video">🖼️</div>
+        <div class="sound-icon" id="soundIcon" role="button" aria-label="Toggle Sound">🔊</div>
+    </div>
+
+    <div class="video-list" id="videoList">
+        <div class="video-option" data-url="/media/video1.mp4" data-color="#4CAF50">Video 1</div>
+        <div class="video-option" data-url="/media/video2.mp4" data-color="#2196F3">Video 2</div>
+        <div class="video-option" data-url="/media/video3.mp4" data-color="#FF9800">Video 3</div>
+        <div class="video-option" data-url="/media/video4.mp4" data-color="#9C27B0">Video 4</div>
+        <div class="video-option" data-url="/media/video5.mp4" data-color="#FFEB3B">Video 5</div>
+        <div class="video-option" data-url="/media/video7.mp4" data-color="#9C27B0">Video 6</div>
+        <div class="video-option" data-url="/media/video6.mp4" data-color="#9C27B0">Video 7</div>
+        <div class="video-option" data-url="/media/video8.mp4" data-color="#9C27B0">Video 8</div>
+    </div>
+
+<!-- Wish Page -->
+<div class="wish-page" id="wishPage">
+    <div class="see-all-header">
+        <span class="see-all-back" id="wishBackBtnHeader" role="button" aria-label="Back"><</span>
+        <div class="see-all-title">Make a Wish</div>
+    </div>
+    <div class="wish-text">"Make a wish to the Universe with belief"</div>
+    <select class="wish-select" id="wishSelect" aria-label="Select a wish">
+        <option value="" disabled selected>Select a wish</option>
+        <option value="wealth">I wish for endless wealth</option>
+        <option value="health">I wish for perfect job</option>
+        <option value="love">I wish for true love</option>
+        <option value="success">I wish for great success</option>
+        <option value="peace">I wish for inner peace</option>
+    </select>
+    <button class="ask-button" id="askBtn" aria-label="Submit Wish">Ask</button>
+    <button class="back-button" id="wishBackBtn" aria-label="Back">Back</button>
+</div>
+
+<!-- Wishlist Page -->
+<div class="wishlist-page" id="wishlistPage">
+    <div class="see-all-header">
+        <span class="see-all-back" id="wishlistBackBtnHeader" role="button" aria-label="Back"><</span>
+        <div class="see-all-title">Your Wishlist</div>
+    </div>
+    <div id="wishlistContainer" style="width: 95%; max-height: 80vh; overflow-y: auto;"></div>
+    <button class="back-button" id="wishlistBackBtn" aria-label="Back">Back</button>
+</div>
+
+<!-- Audio Page -->
+<div class="audio-page" id="audioPage">
+    <div class="see-all-header">
+        <span class="see-all-back" id="audioBackBtnHeader" role="button" aria-label="Back"><</span>
+        <div class="see-all-title">Audios</div>
+    </div>
+    <div class="grid-container" id="audioGrid"></div>
+    <button class="back-button" id="audioBackBtn" aria-label="Back">Back</button>
+</div>
+
+<!-- Video Page -->
+<div class="video-page" id="videoPage">
+    <div class="see-all-header">
+        <span class="see-all-back" id="videoBackBtnHeader" role="button" aria-label="Back"><</span>
+        <div class="see-all-title">Videos</div>
+    </div>
+    <div class="grid-container" id="videoGrid"></div>
+    <button class="back-button" id="videoBackBtn" aria-label="Back">Back</button>
+</div>
+
+<!-- Action Page -->
+<div class="action-page" id="actionPage">
+    <div class="see-all-header">
+        <span class="see-all-back" id="actionBackBtnHeader" role="button" aria-label="Back"><</span>
+        <div class="see-all-title">Actions</div>
+    </div>
+    <div class="grid-container" id="actionGrid"></div>
+    <button class="back-button" id="actionBackBtn" aria-label="Back">Back</button>
+</div>
+
+<!-- Books Page -->
+<div class="books-page" id="booksPage">
+    <div class="see-all-header">
+        <span class="see-all-back" id="booksBackBtnHeader" role="button" aria-label="Back"><</span>
+        <div class="see-all-title">Books</div>
+    </div>
+    <div class="grid-container" id="booksGrid"></div>
+    <button class="back-button" id="booksBackBtn" aria-label="Back">Back</button>
+</div>
+
+<!-- How to Use Page -->
+<div class="how-to-use-page" id="howToUsePage" style="display: none;">
+    <div class="see-all-header">
+        <span class="see-all-back" id="howToUseBackBtnHeader" role="button" aria-label="Back"><</span>
+        <div class="see-all-title">How to Use</div>
+    </div>
+    <div style="font-size: 16px; color: black; text-align: left; max-width: 80%; margin: 0 auto;">
+        Welcome to Grand Wish! Follow these steps to manifest your dreams:
+        <ul class="how-to-use-steps">
+            <li>Click "START" to make a wish.</li>
+            <li>Select a wish from the dropdown and submit it.</li>
+            <li>View your wishlist and follow inspired actions.</li>
+            <li>Explore audios, videos, and actions to boost your belief.</li>
+            <li>Upgrade your plan for unlimited wishes and exclusive content!</li>
+        </ul>
+    </div>
+    <button class="back-button" id="howToUseBackBtn" aria-label="Back">Back</button>
+</div>
+
+<!-- Optional: Update Response Page -->
+<div class="response-page" id="responsePage">
+    <div class="see-all-header">
+        <span class="see-all-back" id="responseBackBtnHeader" role="button" aria-label="Back"><</span>
+        <div class="see-all-title">Universe Response</div>
+    </div>
+    <div class="stars" id="starsContainer"></div>
+    <div class="universe-response" id="responseText"></div>
+    <button class="response-back-button" id="responseBackBtn" aria-label="Back">Back</button>
+</div>
+
+    <div class="scroll-section">
+        <div class="section-header">
+            <h3>Audios</h3>
+            <span class="see-all" id="seeAllAudios" role="button" aria-label="See All Audios">See All</span>
+        </div>
+        <div class="scroll-container" id="homeAudioGrid"></div>
+    </div>
+
+    <div class="scroll-section">
+        <div class="section-header">
+            <h3>Videos</h3>
+            <span class="see-all" id="seeAllVideos" role="button" aria-label="See All Videos">See All</span>
+        </div>
+        <div class="scroll-container" id="homeVideoGrid"></div>
+    </div>
+
+    <div class="belief-booster-icon" id="beliefBoosterIcon" role="button" aria-label="Belief Boosters">💫</div>
+
+    <div class="bottom-nav" id="bottomNav" role="navigation" aria-label="Main navigation">
+        <div id="homeBtn" role="button" aria-label="Home">🏠</div>
+        <div id="wishBtn" role="button" aria-label="Wish">🌟</div>
+        <div id="audioBtn" role="button" aria-label="Audios">🎧</div>
+        <div id="videoBtn" role="button" aria-label="Videos">▶️</div>
+        <div id="actionBtn" role="button" aria-label="Actions">🎯</div>
+        <div id="booksBtn" role="button" aria-label="Books">📒</div>
+        <div id="wishlistBtn" role="button" aria-label="Wishlist">📝</div>
+    </div>
+
+    <div class="belief-booster-page" id="beliefBoosterPage">
+        <div class="see-all-header">
+            <span class="see-all-back" id="boosterBackBtn" role="button" aria-label="Back"><</span>
+            <div class="see-all-title">Belief Boosters</div>
+        </div>
+        <div id="boosterContainer" style="width: 95%; max-height: 80vh; overflow-y: auto;"></div>
+        <button class="back-button" id="boosterBackBtnBottom" aria-label="Back">Back</button>
+    </div>
+
+    <div class="subscription-page" id="subscriptionPage">
+        <div class="see-all-header">
+            <span class="see-all-back" id="subBackBtn" role="button" aria-label="Back"><</span>
+            <div class="see-all-title">Subscription Plans</div>
+        </div>
+        <div class="sub-option" data-plan="free">Basic (Free)</div>
+        <div class="sub-option" data-plan="premium">Premium (150rs/month)</div>
+        <div class="sub-option" data-plan="elite">Elite (500rs/month)</div>
+        <button class="back-button" id="subBackBtnBottom" aria-label="Back">Back</button>
+    </div>
+
+    <div class="loading" id="loading">⏳</div>
+
+    <script>
+    
+        // DOM Elements
+        const splashScreen = document.getElementById('splashScreen');
+        const banner = document.getElementById('banner');
+        const bannerVideo = document.getElementById('bannerVideo');
+        const imageIcon = document.getElementById('imageIcon');
+        const soundIcon = document.getElementById('soundIcon');
+        const videoList = document.getElementById('videoList');
+        const videoOptions = document.querySelectorAll('.video-option');
+        const startBtn = document.getElementById('startBtn');
+        const wishPage = document.getElementById('wishPage');
+        const askBtn = document.getElementById('askBtn');
+        const wishBackBtn = document.getElementById('wishBackBtn');
+        const responsePage = document.getElementById('responsePage');
+        const responseBackBtn = document.getElementById('responseBackBtn');
+        const wishSelect = document.getElementById('wishSelect');
+        const responseText = document.getElementById('responseText');
+        const starsContainer = document.getElementById('starsContainer');
+        const homeBtn = document.getElementById('homeBtn');
+        const wishBtn = document.getElementById('wishBtn');
+        const audioBtn = document.getElementById('audioBtn');
+        const videoBtn = document.getElementById('videoBtn');
+        const actionBtn = document.getElementById('actionBtn');
+        const booksBtn = document.getElementById('booksBtn');
+        const wishlistBtn = document.getElementById('wishlistBtn');
+        const wishlistPage = document.getElementById('wishlistPage');
+        const wishlistContainer = document.getElementById('wishlistContainer');
+        const wishlistBackBtn = document.getElementById('wishlistBackBtn');
+        const audioPage = document.getElementById('audioPage');
+        const videoPage = document.getElementById('videoPage');
+        const actionPage = document.getElementById('actionPage');
+        const booksPage = document.getElementById('booksPage');
+        const audioBackBtn = document.getElementById('audioBackBtn');
+        const videoBackBtn = document.getElementById('videoBackBtn');
+        const actionBackBtn = document.getElementById('actionBackBtn');
+        const booksBackBtn = document.getElementById('booksBackBtn');
+        const audioGrid = document.getElementById('audioGrid');
+        const videoGrid = document.getElementById('videoGrid');
+        const actionGrid = document.getElementById('actionGrid');
+        const booksGrid = document.getElementById('booksGrid');
+        const homeAudioGrid = document.getElementById('homeAudioGrid');
+        const homeVideoGrid = document.getElementById('homeVideoGrid');
+        const seeAllAudios = document.getElementById('seeAllAudios');
+        const seeAllVideos = document.getElementById('seeAllVideos');
+        const beliefBoosterIcon = document.getElementById('beliefBoosterIcon');
+        const beliefBoosterPage = document.getElementById('beliefBoosterPage');
+        const boosterBackBtn = document.getElementById('boosterBackBtn');
+        const boosterBackBtnBottom = document.getElementById('boosterBackBtnBottom');
+        const boosterContainer = document.getElementById('boosterContainer');
+        const profileIcon = document.getElementById('profileIcon');
+        const profileMenu = document.getElementById('profileMenu');
+        const manageSubscription = document.getElementById('manageSubscription');
+        const buyBoosts = document.getElementById('buyBoosts');
+        const settings = document.getElementById('settings');
+        const inviteFriends = document.getElementById('inviteFriends');
+        const howToUse = document.getElementById('howToUse');
+        const howToUsePage = document.getElementById('howToUsePage');
+        const howToUseBackBtn = document.getElementById('howToUseBackBtn');
+        const subscriptionPage = document.getElementById('subscriptionPage');
+        const subBackBtn = document.getElementById('subBackBtn');
+        const subBackBtnBottom = document.getElementById('subBackBtnBottom');
+        const wishCount = document.getElementById('wishCount');
+        const userPlan = document.getElementById('userPlan');
+        const activeBoostsCount = document.getElementById('activeBoostsCount');
+        const loading = document.getElementById('loading');
+        
+
+        // Color palette
+        const colors = [
+            '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEEAD',
+            '#D4A5A5', '#9B59B6', '#3498DB', '#E74C3C', '#2ECC71',
+            '#F1C40F', '#E67E22', '#1ABC9C', '#8E44AD', '#D35400',
+            '#16A085', '#F39C12', '#C0392B', '#2980B9', '#8FBC8F'
+        ];
+
+        // Load data from localStorage
+        let user = JSON.parse(localStorage.getItem('user')) || { name: "Dreamer", wishes: 0, plan: "Free" };
+        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        let activeBoosts = JSON.parse(localStorage.getItem('activeBoosts')) || [];
+
+        // Save data to localStorage
+        const saveData = () => {
+            localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            localStorage.setItem('activeBoosts', JSON.stringify(activeBoosts));
+        };
+
+        // Hide all pages and show main content
+        const hideAllPages = () => {
+            document.querySelectorAll('.wish-page, .response-page, .wishlist-page, .audio-page, .video-page, .action-page, .books-page, .section-see-all-page, .wish-guide-page, .belief-booster-page, .subscription-page, .media-page, .how-to-use-page').forEach(page => {
+                page.style.display = 'none';
+            });
+            document.querySelectorAll('body > *:not(.wish-page):not(.response-page):not(.wishlist-page):not(.audio-page):not(.video-page):not(.action-page):not(.books-page):not(.section-see-all-page):not(.wish-guide-page):not(.belief-booster-page):not(.subscription-page):not(.media-page):not(.how-to-use-page):not(#bottomNav):not(#beliefBoosterIcon):not(#profileMenu):not(#loading):not(#splashScreen)').forEach(el => {
+                el.style.display = '';
+            });
+            profileMenu.style.display = 'none';
+            splashScreen.classList.add('hidden'); // Ensure splash screen stays hidden
+        };
+
+        // Show a specific page
+        const showPage = (page) => {
+            document.querySelectorAll('.section-see-all-page, .wish-guide-page, .media-page').forEach(p => p.remove());
+            hideAllPages();
+            page.style.display = 'flex';
+            profileMenu.style.display = 'none';
+        };
+
+        // Update profile information
+        const updateProfile = () => {
+            document.getElementById('userName').textContent = `Welcome, ${user.name}!`;
+            wishCount.textContent = user.wishes;
+            userPlan.textContent = user.plan;
+            activeBoostsCount.textContent = activeBoosts.length;
+        };
+        updateProfile();
+
+        // Initialize splash screen and video controls
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                splashScreen.classList.add('hidden');
+            }, 5000); // Reduced to 2 seconds for faster UX
+
+            // Video selection logic
+            videoOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    const url = option.getAttribute('data-url');
+                    const color = option.getAttribute('data-color');
+                    bannerVideo.src = url;
+                    bannerVideo.play().catch(() => alert('Error playing video.'));
+                    document.body.style.backgroundColor = color;
+                    banner.style.setProperty('--banner-fade-color', color);
+                    videoList.style.display = 'none';
+                });
+            });
+
+            // Set initial values
+            document.body.style.backgroundColor = '#4CAF50';
+            banner.style.setProperty('--banner-fade-color', '#4CAF50');
+        });
+
+        // Fade banner on scroll
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.scrollY;
+            banner.classList.toggle('fade-out', scrollPosition > 50);
+        });
+
+        // Toggle sound
+        soundIcon.addEventListener('click', () => {
+            bannerVideo.muted = !bannerVideo.muted;
+            soundIcon.textContent = bannerVideo.muted ? '🔇' : '🔊';
+        });
+
+        // Toggle video list
+        imageIcon.addEventListener('click', () => {
+            videoList.style.display = videoList.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Close video list and profile menu on outside click
+        document.addEventListener('click', (e) => {
+            if (!videoList.contains(e.target) && e.target !== imageIcon) {
+                videoList.style.display = 'none';
+            }
+            if (!profileMenu.contains(e.target) && e.target !== profileIcon) {
+                profileMenu.style.display = 'none';
+            }
+        });
+
+        // Profile menu toggle
+        profileIcon.addEventListener('click', () => {
+            profileMenu.style.display = profileMenu.style.display === 'block' ? 'none' : 'block';
+        });
+        profileIcon.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                profileMenu.style.display = 'block';
+            }
+        });
+
+        // Subscription management
+        manageSubscription.addEventListener('click', () => {
+            showPage(subscriptionPage);
+        });
+
+        const subOptions = subscriptionPage.querySelectorAll('.sub-option');
+        subOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const plan = option.getAttribute('data-plan');
+                user.plan = plan.charAt(0).toUpperCase() + plan.slice(1);
+                updateProfile();
+                saveData();
+                alert(`Subscribed to ${user.plan} plan!`); // Placeholder for payment
+            });
+        });
+
+        subBackBtn.addEventListener('click', hideAllPages);
+        subBackBtnBottom.addEventListener('click', hideAllPages);
+
+        // Belief boosters
+        buyBoosts.addEventListener('click', () => {
+            showPage(beliefBoosterPage);
+            renderBoosters();
+        });
+
+        // Settings (placeholder)
+        settings.addEventListener('click', () => {
+            alert('Settings coming soon!');
+            profileMenu.style.display = 'none';
+        });
+
+        // Invite friends (placeholder)
+        inviteFriends.addEventListener('click', () => {
+            alert('Invite a friend and get a free boost! (Coming soon)');
+            profileMenu.style.display = 'none';
+        });
+
+        // How to Use page
+        howToUse.addEventListener('click', () => {
+            showPage(howToUsePage);
+        });
+        howToUseBackBtn.addEventListener('click', hideAllPages);
+
+        // Create scrollable items for homepage
+        const createHomeScroll = (items, container) => {
+            container.innerHTML = '';
+            items.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'scroll-item';
+                itemDiv.style.backgroundColor = colors[index % colors.length];
+                itemDiv.textContent = item.title;
+                itemDiv.setAttribute('role', 'button');
+                itemDiv.setAttribute('aria-label', `Play ${item.title}`);
+                itemDiv.addEventListener('click', () => {
+                    playMedia(item.url, item.title, item.url.endsWith('.mp4'));
+                });
+                container.appendChild(itemDiv);
+            });
+        };
+
+        // Create section scrolls for pages
+        const createSectionScroll = (sections, container, parentPage, sectionData) => {
+            container.innerHTML = '';
+            sections.forEach((section, sectionIndex) => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'section';
+                const header = document.createElement('div');
+                header.className = 'section-header';
+                const title = document.createElement('h3');
+                title.textContent = section.name;
+                const seeAll = document.createElement('span');
+                seeAll.className = 'see-all';
+                seeAll.textContent = 'See All';
+                seeAll.setAttribute('role', 'button');
+                seeAll.setAttribute('aria-label', `See all ${section.name}`);
+                header.appendChild(title);
+                header.appendChild(seeAll);
+                const row = document.createElement('div');
+                row.className = 'grid-row';
+
+                section.items.forEach((item, itemIndex) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'grid-item';
+                    const color = colors[(sectionIndex * 5 + itemIndex) % colors.length];
+                    itemDiv.innerHTML = `<div class="grid-shape" style="background-color: ${color};"><div class="grid-title">${item.title}</div></div>`;
+                    itemDiv.setAttribute('role', 'button');
+                    itemDiv.setAttribute('aria-label', `Play ${item.title}`);
+                    itemDiv.addEventListener('click', () => {
+                        playMedia(item.url || item, item.title || item, section.name === 'Videos' || section.name.includes('Video'));
+                    });
+                    row.appendChild(itemDiv);
+                });
+
+                sectionDiv.appendChild(header);
+                sectionDiv.appendChild(row);
+                container.appendChild(sectionDiv);
+
+                seeAll.addEventListener('click', () => {
+                    const seeAllPage = document.createElement('div');
+                    seeAllPage.className = 'section-see-all-page';
+                    seeAllPage.id = `seeAll-${container.id}-${sectionIndex}`;
+
+                    const headerDiv = document.createElement('div');
+                    headerDiv.className = 'see-all-header';
+                    const backBtn = document.createElement('span');
+                    backBtn.className = 'see-all-back';
+                    backBtn.textContent = '<';
+                    backBtn.setAttribute('role', 'button');
+                    backBtn.setAttribute('aria-label', 'Back');
+                    const titleDiv = document.createElement('div');
+                    titleDiv.className = 'see-all-title';
+                    titleDiv.textContent = `All ${section.name}`;
+                    headerDiv.appendChild(backBtn);
+                    headerDiv.appendChild(titleDiv);
+
+                    const gridDiv = document.createElement('div');
+                    gridDiv.className = 'see-all-grid';
+                    section.items.forEach((item, index) => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = 'see-all-item';
+                        itemDiv.style.backgroundColor = colors[index % colors.length];
+                        itemDiv.innerHTML = `<div class="grid-title">${item.title || item}</div>`;
+                        itemDiv.setAttribute('role', 'button');
+                        itemDiv.setAttribute('aria-label', `Play ${item.title || item}`);
+                        itemDiv.addEventListener('click', () => {
+                            playMedia(item.url || item, item.title || item, section.name === 'Videos' || section.name.includes('Video'));
+                        });
+                        gridDiv.appendChild(itemDiv);
+                    });
+
+                    seeAllPage.appendChild(headerDiv);
+                    seeAllPage.appendChild(gridDiv);
+                    document.body.appendChild(seeAllPage);
+
+                    showPage(seeAllPage);
+
+                    backBtn.addEventListener('click', () => {
+                        showPage(parentPage);
+                        seeAllPage.remove();
+                    });
+                });
+            });
+        };
+
+        // Render wishlist
+        const renderWishlist = () => {
+            wishlistContainer.innerHTML = '';
+            wishlist.forEach((wish, index) => {
+                const wishItem = document.createElement('div');
+                wishItem.className = 'wishlist-item';
+                wishItem.textContent = wish.text;
+                wishItem.setAttribute('role', 'button');
+                wishItem.setAttribute('aria-label', `View ${wish.text} guide`);
+                wishItem.addEventListener('click', () => {
+                    const guidePage = createWishGuidePage(wish);
+                    document.body.appendChild(guidePage);
+                    showPage(guidePage);
+                });
+                wishlistContainer.appendChild(wishItem);
+            });
+        };
+
+        // Create wish guide page
+        const createWishGuidePage = (wish) => {
+            const guidePage = document.createElement('div');
+            guidePage.className = 'wish-guide-page';
+            guidePage.id = `wish-guide-${Date.now()}`;
+
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'see-all-header';
+            const backBtn = document.createElement('span');
+            backBtn.className = 'see-all-back';
+            backBtn.textContent = '<';
+            backBtn.setAttribute('role', 'button');
+            backBtn.setAttribute('aria-label', 'Back');
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'see-all-title';
+            titleDiv.textContent = wish.text;
+            headerDiv.appendChild(backBtn);
+            headerDiv.appendChild(titleDiv);
+
+            const guideSection = document.createElement('div');
+            guideSection.className = 'guide-section';
+            const guideTitle = document.createElement('h3');
+            guideTitle.textContent = 'Inspired Actions';
+            const guideText = document.createElement('p');
+            guideText.textContent = wish.guide;
+            guideSection.appendChild(guideTitle);
+            guideSection.appendChild(guideText);
+
+            const audioSection = document.createElement('div');
+            audioSection.className = 'guide-section';
+            const audioTitle = document.createElement('h3');
+            audioTitle.textContent = 'Related Audios';
+            const audioGrid = document.createElement('div');
+            audioGrid.className = 'media-grid';
+            wish.audios.forEach(audio => {
+                const audioItem = document.createElement('div');
+                audioItem.className = 'grid-item';
+                audioItem.innerHTML = `<div class="grid-shape" style="background-color: ${colors[Math.floor(Math.random() * colors.length)]};"><div class="grid-title(operator)">${audio.title}</div></div>`;
+                audioItem.setAttribute('role', 'button');
+                audioItem.setAttribute('aria-label', `Play ${audio.title}`);
+                audioItem.addEventListener('click', () => {
+                    playMedia(audio.url, audio.title, false);
+                });
+                audioGrid.appendChild(audioItem);
+            });
+            audioSection.appendChild(audioTitle);
+            audioSection.appendChild(audioGrid);
+
+            const videoSection = document.createElement('div');
+            videoSection.className = 'guide-section';
+            const videoTitle = document.createElement('h3');
+            videoTitle.textContent = 'Related Videos';
+            const videoGrid = document.createElement('div');
+            videoGrid.className = 'media-grid';
+            wish.videos.forEach(video => {
+                const videoItem = document.createElement('div');
+                videoItem.className = 'grid-item';
+                videoItem.innerHTML = `<div class="grid-shape" style="background-color: ${colors[Math.floor(Math.random() * colors.length)]};"><div class="grid-title">${video.title}</div></div>`;
+                videoItem.setAttribute('role', 'button');
+                videoItem.setAttribute('aria-label', `Play ${video.title}`);
+                videoItem.addEventListener('click', () => {
+                    playMedia(video.url, video.title, true);
+                });
+                videoGrid.appendChild(videoItem);
+            });
+            videoSection.appendChild(videoTitle);
+            videoSection.appendChild(videoGrid);
+
+            guidePage.appendChild(headerDiv);
+            guidePage.appendChild(guideSection);
+            guidePage.appendChild(audioSection);
+            guidePage.appendChild(videoSection);
+
+            backBtn.addEventListener('click', () => {
+                showPage(wishlistPage);
+                renderWishlist();
+                guidePage.remove();
+            });
+
+            return guidePage;
+        };
+
+        // Render belief boosters
+        const renderBoosters = () => {
+            boosterContainer.innerHTML = '';
+            const boosters = [
+                { name: 'Double Speed (200rs)', message: 'Your wish is accelerating!', duration: '24h' },
+                { name: 'Triple Speed (300rs)', message: 'Your wish is zooming!', duration: '48h' },
+                { name: 'Superfast (1000rs)', message: 'Your wish is manifesting fast!', duration: '72h' }
+            ];
+            boosters.forEach(booster => {
+                const isActive = activeBoosts.find(b => b.name === booster.name);
+                const boosterOption = document.createElement('div');
+                boosterOption.className = 'booster-option';
+                boosterOption.textContent = isActive ? `${booster.name} (Active - ${isActive.duration})` : booster.name;
+                boosterOption.setAttribute('role', 'button');
+                boosterOption.setAttribute('aria-label', isActive ? `${booster.name} (Active)` : `Purchase ${booster.name}`);
+                boosterOption.addEventListener('click', () => {
+                    if (!isActive) {
+                        activeBoosts.push({ name: booster.name, duration: booster.duration });
+                        updateProfile();
+                        saveData();
+                        alert(booster.message); // Placeholder for payment
+                        renderBoosters();
+                    }
+                });
+                boosterContainer.appendChild(boosterOption);
+            });
+        };
+
+        // Play media (audio or video)
+        const playMedia = (url, title, isVideo) => {
+            const mediaPage = document.createElement('div');
+            mediaPage.className = 'media-page';
+            mediaPage.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: inherit;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                z-index: 1300;
+                padding: 20px;
+            `;
+
+            const mediaTitle = document.createElement('div');
+            mediaTitle.className = 'page-title';
+            mediaTitle.textContent = title;
+            mediaPage.appendChild(mediaTitle);
+
+            const mediaElement = document.createElement(isVideo ? 'video' : 'audio');
+            mediaElement.controls = true;
+            mediaElement.autoplay = true;
+            mediaElement.src = url;
+            mediaElement.style.cssText = isVideo ? 'max-width: 90%; max-height: 70vh;' : 'width: 80%;';
+            mediaElement.onerror = () => {
+                alert('Failed to load media. Please try another item.');
+            };
+            mediaPage.appendChild(mediaElement);
+
+            const backBtn = document.createElement('button');
+            backBtn.className = 'back-button';
+            backBtn.textContent = 'Back';
+            backBtn.setAttribute('role', 'button');
+            backBtn.setAttribute('aria-label', 'Back');
+            backBtn.addEventListener('click', () => {
+                mediaPage.remove();
+                hideAllPages();
+            });
+            mediaPage.appendChild(backBtn);
+
+            document.body.appendChild(mediaPage);
+            showPage(mediaPage);
+        };
+
+        // Belief booster icon
+        beliefBoosterIcon.addEventListener('click', () => {
+            showPage(beliefBoosterPage);
+            renderBoosters();
+        });
+
+        boosterBackBtn.addEventListener('click', hideAllPages);
+        boosterBackBtnBottom.addEventListener('click', hideAllPages);
+// Header back buttons for navigation pages
+const wishBackBtnHeader = document.getElementById('wishBackBtnHeader');
+const wishlistBackBtnHeader = document.getElementById('wishlistBackBtnHeader');
+const audioBackBtnHeader = document.getElementById('audioBackBtnHeader');
+const videoBackBtnHeader = document.getElementById('videoBackBtnHeader');
+const actionBackBtnHeader = document.getElementById('actionBackBtnHeader');
+const booksBackBtnHeader = document.getElementById('booksBackBtnHeader');
+const howToUseBackBtnHeader = document.getElementById('howToUseBackBtnHeader');
+const responseBackBtnHeader = document.getElementById('responseBackBtnHeader'); 
+
+wishBackBtnHeader.addEventListener('click', hideAllPages);
+wishlistBackBtnHeader.addEventListener('click', hideAllPages);
+audioBackBtnHeader.addEventListener('click', hideAllPages);
+videoBackBtnHeader.addEventListener('click', hideAllPages);
+actionBackBtnHeader.addEventListener('click', hideAllPages);
+booksBackBtnHeader.addEventListener('click', hideAllPages);
+howToUseBackBtnHeader.addEventListener('click', hideAllPages);
+responseBackBtnHeader.addEventListener('click', hideAllPages);
+
+// Update responseBackBtn to return to homepage
+responseBackBtn.addEventListener('click', hideAllPages);
+        // Homepage data
+        const homeAudios = [
+            { title: '🎵 Audio 1', url: '/media/audio1.mp3' },
+            { title: '🎵 Audio 2', url: '/media/audio2.mp3' },
+            { title: '🎵 Audio 3', url: '/media/audio3.mp3' },
+            { title: '🎵 Audio 4', url: '/media/audio4.mp3' },
+            { title: '🎵 Audio 5', url: '/media/audio5.mp3' }
+        ];
+        const homeVideos = [
+            { title: '📹 Video 1', url: '/media/video1.mp4' },
+            { title: '📹 Video 2', url: '/media/video2.mp4' },
+            { title: '📹 Video 3', url: '/media/video3.mp4' },
+            { title: '📹 Video 4', url: '/media/video4.mp4' },
+            { title: '📹 Video 5', url: '/media/video5.mp4' }
+        ];
+        createHomeScroll(homeAudios, homeAudioGrid);
+        createHomeScroll(homeVideos, homeVideoGrid);
+
+        // Audio page sections
+        const audioSections = [
+            {
+                name: 'Relaxing',
+                items: [
+                    { title: 'Relax 1', url: '/media/audio1.mp3' },
+                    { title: 'Relax 2', url: '/media/audio2.mp3' },
+                    { title: 'Relax 3', url: '/media/audio3.mp3' },
+                    { title: 'Relax 4', url: '/media/audio4.mp3' },
+                    { title: 'Relax 5', url: '/media/audio5.mp3' }
+                ]
+            },
+            {
+                name: 'Energetic',
+                items: [
+                    { title: 'Energy 1', url: '/media/audio6.mp3' },
+                    { title: 'Energy 2', url: '/media/audio7.mp3' },
+                    { title: 'Energy 3', url: '/media/audio8.mp3' },
+                    { title: 'Energy 4', url: '/media/audio9.mp3' },
+                    { title: 'Energy 5', url: '/media/audio10.mp3' }
+                ]
+            }
+        ];
+
+        // Video page sections
+        const videoSections = [
+            {
+                name: 'Tutorials',
+                items: [
+                    { title: 'Tutor 1', url: '/media/video1.mp4' },
+                    { title: 'Tutor 2', url: '/media/video2.mp4' },
+                    { title: 'Tutor 3', url: '/media/video3.mp4' },
+                    { title: 'Tutor 4', url: '/media/video4.mp4' },
+                    { title: 'Tutor 5', url: '/media/video5.mp4' }
+                ]
+            },
+            {
+                name: 'Inspiration',
+                items: [
+                    { title: 'Inspire 1', url: '/media/video6.mp4' },
+                    { title: 'Inspire 2', url: '/media/video7.mp4' },
+                    { title: 'Inspire 3', url: '/media/video8.mp4' },
+                    { title: 'Inspire 4', url: '/media/video9.mp4' },
+                    { title: 'Inspire 5', url: '/media/video10.mp4' }
+                ]
+            }
+        ];
+
+        // Action page sections
+        const actionSections = [
+            { name: 'Mindfulness', items: ['Meditate', 'Breathe', 'Reflect', 'Journal', 'Gratitude'] },
+            { name: 'Fitness', items: ['Stretch', 'Run', 'Yoga', 'Dance', 'Exercise'] }
+        ];
+
+        // Books page sections
+        const booksSections = [
+            { name: 'Fiction', items: ['Novel 1', 'Novel 2', 'Novel 3', 'Novel 4', 'Novel 5'] },
+            { name: 'Non-Fiction', items: ['Bio 1', 'Bio 2', 'Bio 3', 'Bio 4', 'Bio 5'] }
+        ];
+
+        // Wish guides and related content
+        const wishGuides = {
+            wealth: {
+                guide: "To manifest wealth, visualize abundance daily, set financial goals, and take small steps like saving or investing.",
+                audios: [
+                    { title: 'Money Affirmations', url: '/media/audio1.mp3' },
+                    { title: 'Wealth Meditation', url: '/media/audio2.mp3' },
+                    { title: 'Prosperity Soundtrack', url: '/media/audio3.mp3' }
+                ],
+                videos: [
+                    { title: 'Financial Freedom Tips', url: '/media/video1.mp4' },
+                    { title: 'Investing 101', url: '/media/video2.mp4' },
+                    { title: 'Abundance Mindset', url: '/media/video3.mp4' }
+                ]
+            },
+            health: {
+                guide: "For perfect health, prioritize nutrition, exercise regularly, and practice mindfulness to reduce stress.",
+                audios: [
+                    { title: 'Healing Frequencies', url: '/media/audio4.mp3' },
+                    { title: 'Relaxation Audio', url: '/media/audio5.mp3' },
+                    { title: 'Energy Boost', url: '/media/audio6.mp3' }
+                ],
+                videos: [
+                    { title: 'Yoga Basics', url: '/media/video4.mp4' },
+                    { title: 'Healthy Eating Guide', url: '/media/video5.mp4' },
+                    { title: 'Stress Relief Techniques', url: '/media/video6.mp4' }
+                ]
+            },
+            love: {
+                guide: "To attract true love, cultivate self-love, be open to new connections, and express gratitude for relationships.",
+                audios: [
+                    { title: 'Love Affirmations', url: '/media/audio7.mp3' },
+                    { title: 'Heart Chakra Meditation', url: '/media/audio8.mp3' },
+                    { title: 'Romantic Melodies', url: '/media/audio9.mp3' }
+                ],
+                videos: [
+                    { title: 'Self-Love Journey', url: '/media/video7.mp4' },
+                    { title: 'Dating Tips', url: '/media/video8.mp4' },
+                    { title: 'Building Relationships', url: '/media/video9.mp4' }
+                ]
+            },
+            success: {
+                guide: "Achieve success by setting clear intentions, working consistently, and learning from setbacks.",
+                audios: [
+                    { title: 'Success Mindset', url: '/media/audio10.mp3' },
+                    { title: 'Motivational Speech', url: '/media/audio1.mp3' },
+                    { title: 'Focus Music', url: '/media/audio2.mp3' }
+                ],
+                videos: [
+                    { title: 'Goal Setting Workshop', url: '/media/video10.mp4' },
+                    { title: 'Overcoming Failure', url: '/media/video1.mp4' },
+                    { title: 'Productivity Hacks', url: '/media/video2.mp4' }
+                ]
+            },
+            peace: {
+                guide: "Find inner peace through daily meditation, letting go of negativity, and connecting with nature.",
+                audios: [
+                    { title: 'Peaceful Meditation', url: '/media/audio3.mp3' },
+                    { title: 'Calm Sounds', url: '/media/audio4.mp3' },
+                    { title: 'Mindfulness Practice', url: '/media/audio5.mp3' }
+                ],
+                videos: [
+                    { title: 'Guided Relaxation', url: '/media/video3.mp4' },
+                    { title: 'Nature Healing', url: '/media/video4.mp4' },
+                    { title: 'Stress Management', url: '/media/video5.mp4' }
+                ]
+            }
+        };
+
+        // Wish submission
+        startBtn.addEventListener('click', () => {
+            showPage(wishPage);
+        });
+
+        askBtn.addEventListener('click', () => {
+            const selectedWish = wishSelect.value;
+            if (!selectedWish) {
+                alert('Please select a wish first!');
+                return;
+            }
+            if (user.plan === 'Free' && user.wishes >= 2) {
+                alert('Upgrade to Premium for unlimited wishes!');
+                showPage(subscriptionPage);
+                return;
+            }
+            loading.style.display = 'block';
+            setTimeout(() => {
+                loading.style.display = 'none';
+                const wishText = wishSelect.options[wishSelect.selectedIndex].text;
+                wishlist.push({
+                    text: wishText,
+                    guide: wishGuides[selectedWish].guide,
+                    audios: wishGuides[selectedWish].audios,
+                    videos: wishGuides[selectedWish].videos
+                });
+                user.wishes += 1;
+                updateProfile();
+                saveData();
+                wishPage.style.display = 'none';
+                responsePage.style.display = 'flex';
+                responseText.textContent = 
+                    `==*Message from the Universe*💞 ==
+                    "Your wish has been received. Imagine it already fulfilled. The Universe is with you. When you show belief, miracles begin to unfold. What you desire is coming your way – move forward with faith!"
+                    "Stay in the belief that your wish will come true. Check the Actions 🎯 section for tailored steps to manifest your wish."
+                    "Your wish has been added to your wishlist📝."`;
+                starsContainer.innerHTML = '';
+                for (let i = 0; i < 50; i++) { // Reduced to 50 for performance
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    star.style.left = `${Math.random() * 100}%`;
+                    star.style.top = `${Math.random() * 100}%`;
+                    star.style.animationDelay = `${Math.random() * 1.5}s`;
+                    starsContainer.appendChild(star);
+                }
+                renderWishlist();
+            }, 1000);
+        });
+
+        wishBackBtn.addEventListener('click', hideAllPages);
+        responseBackBtn.addEventListener('click', () => {
+            responsePage.style.display = 'none';
+            wishPage.style.display = 'flex';
+        });
+
+        // Bottom navigation
+        homeBtn.addEventListener('click', hideAllPages);
+
+        wishBtn.addEventListener('click', () => {
+            showPage(wishPage);
+        });
+
+        wishlistBtn.addEventListener('click', () => {
+            showPage(wishlistPage);
+            renderWishlist();
+        });
+
+        wishlistBackBtn.addEventListener('click', hideAllPages);
+
+        audioBtn.addEventListener('click', () => {
+            showPage(audioPage);
+            createSectionScroll(audioSections, audioGrid, audioPage, audioSections);
+        });
+
+        videoBtn.addEventListener('click', () => {
+            showPage(videoPage);
+            createSectionScroll(videoSections, videoGrid, videoPage, videoSections);
+        });
+
+        actionBtn.addEventListener('click', () => {
+            showPage(actionPage);
+            createSectionScroll(actionSections, actionGrid, actionPage, actionSections);
+        });
+
+        booksBtn.addEventListener('click', () => {
+            showPage(booksPage);
+            createSectionScroll(booksSections, booksGrid, booksPage, booksSections);
+        });
+
+        audioBackBtn.addEventListener('click', hideAllPages);
+        videoBackBtn.addEventListener('click', hideAllPages);
+        actionBackBtn.addEventListener('click', hideAllPages);
+        booksBackBtn.addEventListener('click', hideAllPages);
+
+        // See all audios
+        seeAllAudios.addEventListener('click', () => {
+            const seeAllPage = document.createElement('div');
+            seeAllPage.className = 'section-see-all-page';
+            seeAllPage.id = 'seeAll-home-audios';
+
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'see-all-header';
+            const backBtn = document.createElement('span');
+            backBtn.className = 'see-all-back';
+            backBtn.textContent = '<';
+            backBtn.setAttribute('role', 'button');
+            backBtn.setAttribute('aria-label', 'Back');
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'see-all-title';
+            titleDiv.textContent = 'All Audios';
+            headerDiv.appendChild(backBtn);
+            headerDiv.appendChild(titleDiv);
+
+            const gridDiv = document.createElement('div');
+            gridDiv.className = 'see-all-grid';
+            const allAudios = audioSections.flatMap(section => section.items);
+            allAudios.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'see-all-item';
+                itemDiv.style.backgroundColor = colors[index % colors.length];
+                itemDiv.innerHTML = `<div class="grid-title">${item.title}</div>`;
+                itemDiv.setAttribute('role', 'button');
+                itemDiv.setAttribute('aria-label', `Play ${item.title}`);
+                itemDiv.addEventListener('click', () => {
+                    playMedia(item.url, item.title, false);
+                });
+                gridDiv.appendChild(itemDiv);
+            });
+
+            seeAllPage.appendChild(headerDiv);
+            seeAllPage.appendChild(gridDiv);
+            document.body.appendChild(seeAllPage);
+
+            showPage(seeAllPage);
+
+            backBtn.addEventListener('click', () => {
+                hideAllPages();
+                seeAllPage.remove();
+            });
+        });
+
+        // See all videos
+        seeAllVideos.addEventListener('click', () => {
+            const seeAllPage = document.createElement('div');
+            seeAllPage.className = 'section-see-all-page';
+            seeAllPage.id = 'seeAll-home-videos';
+
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'see-all-header';
+            const backBtn = document.createElement('span');
+            backBtn.className = 'see-all-back';
+            backBtn.textContent = '<';
+            backBtn.setAttribute('role', 'button');
+            backBtn.setAttribute('aria-label', 'Back');
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'see-all-title';
+            titleDiv.textContent = 'All Videos';
+            headerDiv.appendChild(backBtn);
+            headerDiv.appendChild(titleDiv);
+
+            const gridDiv = document.createElement('div');
+            gridDiv.className = 'see-all-grid';
+            const allVideos = videoSections.flatMap(section => section.items);
+            allVideos.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'see-all-item';
+                itemDiv.style.backgroundColor = colors[index % colors.length];
+                itemDiv.innerHTML = `<div class="grid-title">${item.title}</div>`;
+                itemDiv.setAttribute('role', 'button');
+                itemDiv.setAttribute('aria-label', `Play ${item.title}`);
+                itemDiv.addEventListener('click', () => {
+                    playMedia(item.url, item.title, true);
+                });
+                gridDiv.appendChild(itemDiv);
+            });
+
+            seeAllPage.appendChild(headerDiv);
+            seeAllPage.appendChild(gridDiv);
+            document.body.appendChild(seeAllPage);
+
+            showPage(seeAllPage);
+
+            backBtn.addEventListener('click', () => {
+                hideAllPages();
+                seeAllPage.remove();
+            });
+        });
+
+        // Initial render
+        renderWishlist();
+    </script>
+</body>
+</html>
